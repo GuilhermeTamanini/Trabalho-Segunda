@@ -17,7 +17,7 @@ class LoginActivityTest {
     }
 
     private fun setText(view: TextInputEditText, text: String) {
-        view.setText(text)
+        view.setText(tex)
     }
 
     private fun click(button: Button) {
