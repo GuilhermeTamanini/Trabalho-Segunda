@@ -17,6 +17,7 @@ class LoginActivityTest {
     }
 
     private fun setText(view: TextInputEditText, text: String) {
+//        forced error fixed
         view.setText(text)
     }
 
