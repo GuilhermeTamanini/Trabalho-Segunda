@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  android-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    environment:
+      - GRADLE_USER_HOME=/home/gradle/.gradle
+    volumes:
+      # Mount project for iterative builds; adjust to read-only for CI if desired
+      - ./:/workspace
+      # Persist Gradle cache across runs to speed up builds
+      - gradle-cache:/root/.gradle
+      # Optional: persist Android SDK between runs (saves sdk installs if you retarget stage)
+      - android-sdk:/opt/android-sdk
+    working_dir: /workspace
+    command: ["/bin/bash", "-lc", "./gradlew --no-daemon assembleDebug && ls -lh app/build/outputs/apk/debug"]
+
+  artifacts:
+    image: alpine:3.20
+    depends_on:
+      - android-builder
+    volumes:
+      - ./dist:/out
+    command: ["/bin/sh", "-lc", "echo 'Copy APKs from builder container: app/build/outputs/apk/debug/*.apk' && sleep 1"]
+
+volumes:
+  gradle-cache:
+  android-sdk:
