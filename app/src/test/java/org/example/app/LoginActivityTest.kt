@@ -17,7 +17,8 @@ class LoginActivityTest {
     }
 
     private fun setText(view: TextInputEditText, text: String) {
-        view.setText(tex)
+//        forced error fixed
+        view.setText(text)
     }
 
     private fun click(button: Button) {
